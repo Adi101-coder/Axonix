@@ -387,16 +387,14 @@ export default function App() {
       <header className="hero" id="top">
         <motion.img className="hero-bg" src={img.heroBg} alt="" style={{ y: heroBgY }} />
         <div className="hero-copy">
-          <motion.div
-            initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          <motion.p
+            className="hero-kicker"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease }}
           >
-            <Pill>
-              <img src={img.badge} alt="" />
-              AI AUTOMATION FOR BUSINESSES
-            </Pill>
-          </motion.div>
+            Axonix
+          </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 28, filter: 'blur(12px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -404,27 +402,8 @@ export default function App() {
           >
             Smarter Solutions,
             <br />
-            Powered by AI
+            <em>Powered by AI.</em>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.18, ease }}
-          >
-            We build intelligent tools, systems, and strategies that help businesses scale,
-            automate, and innovate—faster.
-          </motion.p>
-          <motion.div
-            className="hero-actions"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.28, ease }}
-          >
-            <Btn>Book a Demo</Btn>
-            <Btn href="#cases" variant="light">
-              Explore Our Work
-            </Btn>
-          </motion.div>
         </div>
         <motion.img
           className="hero-hands"
