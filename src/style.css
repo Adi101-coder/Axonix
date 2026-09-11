@@ -78,8 +78,17 @@ button {
   gap: 16px;
   padding: calc(14px + env(safe-area-inset-top)) max(var(--pad), env(safe-area-inset-right)) 14px
     max(var(--pad), env(safe-area-inset-left));
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.nav.scrolled {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 32px rgba(18, 18, 18, 0.06);
+  border-bottom-color: rgba(18, 18, 18, 0.05);
 }
 
 .nav-end {
@@ -236,19 +245,40 @@ button {
   font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .btn-dark {
   background: var(--black);
   color: #fff;
-  box-shadow: var(--shadow-strong);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.btn-dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.22) 48%, transparent 72%);
+  transform: translateX(-130%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.btn-dark:hover::after {
+  transform: translateX(130%);
 }
 
 .btn-light {
   background: #fff;
   color: var(--black);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(18, 18, 18, 0.06);
+}
+
+.btn-light:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
 .btn-ghost {
@@ -1057,9 +1087,66 @@ h4 {
 
 .faq {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(24px, 4vw, 48px);
+  grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
+}
+
+.faq-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 520px;
+}
+
+.faq-intro .pill {
+  min-height: 42px;
+  padding: 8px 18px 8px 12px;
+  gap: 10px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(18, 18, 18, 0.08);
+}
+
+.pill-icon {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--black);
+  flex-shrink: 0;
+}
+
+.pill-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.faq-intro h2 {
+  margin-top: 28px;
+  font-size: clamp(36px, 4.8vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  font-weight: 500;
+  color: #3a3a3a;
+}
+
+.faq-intro .sub {
+  margin: 20px 0 0;
+  max-width: 420px;
+  text-align: left;
+  color: #8a8a8a;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.faq-intro .btn {
+  margin-top: 36px;
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 14px;
+  font-size: 15px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .faq-list {
@@ -1119,60 +1206,92 @@ h4 {
   line-height: 1.6;
 }
 
+.closing {
+  position: relative;
+  overflow: hidden;
+}
+
 .cta {
-  max-width: 1200px;
+  position: relative;
+  z-index: 2;
+  max-width: min(1200px, 100%);
+  padding-bottom: 0;
+  margin-bottom: -88px;
 }
 
 .cta-card {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  background: var(--soft);
-  border-radius: 28px;
-  padding: clamp(24px, 4vw, 40px);
+  gap: 32px;
+  background: #f4f4f4;
+  border: 1px solid rgba(18, 18, 18, 0.05);
+  border-radius: 32px;
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px);
 }
 
 .cta-card > div {
   min-width: 0;
-  flex: 1 1 280px;
+  flex: 1 1 auto;
 }
 
 .cta-card h2 {
-  margin: 14px 0 8px;
+  margin: 16px 0 10px;
+}
+
+.cta-card p {
+  color: var(--muted);
+  max-width: 540px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.cta-card .btn {
+  flex-shrink: 0;
 }
 
 .footer {
   position: relative;
-  padding: 24px max(var(--pad), env(safe-area-inset-left)) 24px max(var(--pad), env(safe-area-inset-right));
-  overflow: hidden;
+  padding: 0 max(var(--pad), env(safe-area-inset-left)) 24px max(var(--pad), env(safe-area-inset-right));
+}
+
+.footer-visual {
+  position: relative;
+  height: clamp(440px, 52vw, 620px);
+  pointer-events: none;
 }
 
 .footer-waves {
   position: absolute;
-  inset: 0;
-  background: url('/images/u57K7Fq0qMUmxKlucOIkzn6tRPk.png') center top / 1400px auto no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, #000 20%, transparent 78%);
-  mask-image: linear-gradient(to bottom, #000 20%, transparent 78%);
-  pointer-events: none;
+  left: 50%;
+  top: -8%;
+  width: min(1680px, 160vw);
+  height: 120%;
+  transform: translateX(-50%);
+  background: url('/images/u57K7Fq0qMUmxKlucOIkzn6tRPk.png') center center / cover no-repeat;
+  opacity: 0.95;
 }
 
 .footer-art {
-  position: relative;
-  display: block;
-  width: min(420px, 70%);
-  margin: 0 auto 8px;
-  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: min(760px, 78vw);
+  max-width: none;
+  transform: translateX(-50%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%);
 }
 
 .footer-grid {
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
   gap: 32px;
   max-width: 1200px;
-  margin: 24px auto 0;
+  margin: 8px auto 0;
 }
 
 .footer h3 {
@@ -1310,13 +1429,27 @@ h4 {
     width: min(100%, 320px);
   }
 
+  .cta {
+    margin-bottom: -56px;
+  }
+
   .cta-card {
     flex-direction: column;
     align-items: stretch;
+    flex-wrap: wrap;
   }
 
   .cta-card .btn {
     width: 100%;
+  }
+
+  .footer-visual {
+    height: clamp(300px, 78vw, 420px);
+  }
+
+  .footer-art {
+    width: min(520px, 92vw);
+    top: 10%;
   }
 
   .process-visual {
@@ -1342,14 +1475,6 @@ h4 {
 
   .marquee-track {
     gap: 40px;
-  }
-
-  .footer-art {
-    width: min(280px, 80%);
-  }
-
-  .footer-waves {
-    background-size: 900px auto;
   }
 }
 
@@ -1438,5 +1563,132 @@ h4 {
   .hero-hands {
     max-width: 1440px;
     margin-inline: auto;
+  }
+}
+
+::selection {
+  background: #121212;
+  color: #fff;
+}
+
+.page {
+  overflow-x: clip;
+}
+
+.hero-bg {
+  will-change: transform;
+}
+
+.hero-hands {
+  will-change: transform;
+  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.08));
+}
+
+.pill {
+  box-shadow: 0 8px 24px rgba(18, 18, 18, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+.feature-card,
+.why-card,
+.price-card,
+.blog-card,
+.quote-card,
+.about-panel,
+.case-card,
+.process-visual,
+.cta-card,
+.faq-item {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feature-card:hover,
+.why-card:hover,
+.price-card:hover,
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 50px rgba(18, 18, 18, 0.08);
+}
+
+.why-card.dark:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 50px rgba(18, 18, 18, 0.28);
+}
+
+.feature-visual,
+.blog-card,
+.process-visual,
+.case-photo {
+  overflow: hidden;
+}
+
+.feature-visual img,
+.blog-card > img,
+.shake,
+.case-photo {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.feature-card:hover .feature-visual img,
+.blog-card:hover > img,
+.process-visual:hover .shake,
+.case-card:hover .case-photo {
+  transform: scale(1.045);
+}
+
+.price-card.popular {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(18, 18, 18, 0.1);
+}
+
+.price-card.popular:hover {
+  transform: translateY(-10px);
+}
+
+.nav-links a {
+  transition: opacity 0.25s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.55;
+}
+
+.client-card {
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.marquee-track {
+  animation-timing-function: linear;
+}
+
+.stats article {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+.stats article:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(18, 18, 18, 0.08);
+}
+
+.service-chip {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.service-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(18, 18, 18, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -69,6 +69,11 @@ export const icons = {
       />
     </Glyph>
   ),
+  spark: (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2.4c.32 3.5 1.9 6.05 4.95 7.6-3.05.78-4.63 3.25-4.95 7.6-.32-3.5-1.9-6.05-4.95-7.6C10.1 8.45 11.68 5.9 12 2.4Z" />
+    </svg>
+  ),
   shield: (
     <Glyph>
       <path

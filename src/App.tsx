@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { AnimatePresence, motion, useInView } from 'framer-motion'
+import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { img } from './images'
 import { icons } from './icons'
@@ -18,10 +18,10 @@ function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.75, delay, ease }}
+      initial={{ opacity: 0, y: 36, filter: 'blur(12px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.9, delay, ease }}
     >
       {children}
     </motion.div>
@@ -42,10 +42,11 @@ function QuoteCard({
   return (
     <motion.article
       className="quote-card"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, delay, ease }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.7, delay, ease }}
     >
       <img className="ql" src={img.quoteLogo} alt="Logoipsum" />
       <p>{quote}</p>
@@ -86,9 +87,9 @@ function Btn({
     <motion.a
       href={href}
       className={`btn btn-${variant}`}
-      whileHover={{ y: -1 }}
+      whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.2 }}
+      transition={{ type: 'spring', stiffness: 420, damping: 28 }}
     >
       {children}
     </motion.a>
@@ -200,6 +201,11 @@ export default function App() {
   const [homeOpen, setHomeOpen] = useState(false)
   const [pagesOpen, setPagesOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const { scrollY } = useScroll()
+  const handsY = useTransform(scrollY, [0, 640], [0, 90])
+  const handsScale = useTransform(scrollY, [0, 640], [1, 1.05])
+  const heroBgY = useTransform(scrollY, [0, 640], [0, 50])
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -232,6 +238,13 @@ export default function App() {
     }
   }, [menuOpen])
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   const current = cases[slide]
   const prev = cases[(slide + cases.length - 1) % cases.length]
   const next = cases[(slide + 1) % cases.length]
@@ -239,7 +252,7 @@ export default function App() {
   return (
     <>
     <div className="page">
-      <nav className="nav">
+      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
         <a href="#top" className="brand" onClick={() => setMenuOpen(false)}>
           <img src={img.logo} alt="Axonix" />
         </a>
@@ -324,35 +337,55 @@ export default function App() {
       </nav>
 
       <header className="hero" id="top">
-        <img className="hero-bg" src={img.heroBg} alt="" />
-        <Reveal className="hero-copy">
-          <Pill>
-            <img src={img.badge} alt="" />
-            AI AUTOMATION FOR BUSINESSES
-          </Pill>
-          <h1>
+        <motion.img className="hero-bg" src={img.heroBg} alt="" style={{ y: heroBgY }} />
+        <div className="hero-copy">
+          <motion.div
+            initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.7, ease }}
+          >
+            <Pill>
+              <img src={img.badge} alt="" />
+              AI AUTOMATION FOR BUSINESSES
+            </Pill>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 28, filter: 'blur(12px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.9, delay: 0.08, ease }}
+          >
             Smarter Solutions,
             <br />
             Powered by AI
-          </h1>
-          <p>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.18, ease }}
+          >
             We build intelligent tools, systems, and strategies that help businesses scale,
             automate, and innovate—faster.
-          </p>
-          <div className="hero-actions">
+          </motion.p>
+          <motion.div
+            className="hero-actions"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.28, ease }}
+          >
             <Btn>Book a Demo</Btn>
             <Btn href="#cases" variant="light">
               Explore Our Work
             </Btn>
-          </div>
-        </Reveal>
+          </motion.div>
+        </div>
         <motion.img
           className="hero-hands"
           src={img.heroHands}
           alt=""
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.25, ease }}
+          style={{ y: handsY, scale: handsScale }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.15, delay: 0.32, ease }}
         />
       </header>
 
@@ -767,8 +800,11 @@ export default function App() {
       </section>
 
       <section className="faq" id="contact">
-        <Reveal>
-          <Pill>FREQUENTLY ASKED QUESTIONS</Pill>
+        <Reveal className="faq-intro">
+          <Pill>
+            <span className="pill-icon">{icons.spark}</span>
+            FREQUENTLY ASKED QUESTIONS
+          </Pill>
           <h2>
             Questions? We’re
             <br />
@@ -811,6 +847,7 @@ export default function App() {
         </div>
       </section>
 
+      <div className="closing">
       <section className="cta">
         <Reveal>
           <div className="cta-card">
@@ -831,8 +868,10 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <div className="footer-waves" aria-hidden="true" />
-        <img className="footer-art" src={img.cubes} alt="" />
+        <div className="footer-visual" aria-hidden="true">
+          <div className="footer-waves" />
+          <img className="footer-art" src={img.cubes} alt="" />
+        </div>
         <div className="footer-grid">
           <div>
             <h3>Axonix.</h3>
@@ -875,6 +914,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
     <AnimatePresence>
       {menuOpen && (
