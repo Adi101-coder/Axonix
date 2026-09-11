@@ -27,6 +27,47 @@ function Reveal({
   )
 }
 
+function QuoteCard({
+  quote,
+  avatar,
+  name,
+  delay = 0,
+}: {
+  quote: string
+  avatar: string
+  name: string
+  delay?: number
+}) {
+  return (
+    <motion.article
+      className="quote-card"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.6, delay, ease }}
+    >
+      <img className="ql" src={img.quoteLogo} alt="Logoipsum" />
+      <p>{quote}</p>
+      <div className="quote-foot">
+        <img src={avatar} alt="" />
+        <div>
+          <strong>{name}</strong>
+          <span>CMO at GreenTech</span>
+        </div>
+        <span className="rating">
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M8 1.5 9.9 5.4l4.3.6-3.1 3 0.7 4.3L8 11.7 3.2 13.3l0.7-4.3-3.1-3 4.3-.6L8 1.5z"
+            />
+          </svg>
+          4.9
+        </span>
+      </div>
+    </motion.article>
+  )
+}
+
 function Pill({ children }: { children: ReactNode }) {
   return <span className="pill">{children}</span>
 }
@@ -53,7 +94,15 @@ function Btn({
   )
 }
 
-function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+function CountUp({
+  to,
+  prefix = '',
+  suffix = '',
+}: {
+  to: number
+  prefix?: string
+  suffix?: string
+}) {
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref, { once: true, amount: 0.6 })
   const [val, setVal] = useState(0)
@@ -73,6 +122,7 @@ function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
 
   return (
     <span ref={ref}>
+      {prefix}
       {val}
       {suffix}
     </span>
@@ -133,11 +183,22 @@ const faqs = [
   },
 ]
 
+const drawerLinks = [
+  ['#top', 'Home'],
+  ['#about', 'About us'],
+  ['#features', 'Features'],
+  ['#pricing', 'Pricing'],
+  ['#cases', 'Case Study'],
+  ['#blog', 'Blog'],
+  ['#contact', 'Contact'],
+] as const
+
 export default function App() {
   const [openFaq, setOpenFaq] = useState(0)
   const [slide, setSlide] = useState(0)
   const [homeOpen, setHomeOpen] = useState(false)
   const [pagesOpen, setPagesOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -146,14 +207,39 @@ export default function App() {
     return () => window.clearInterval(id)
   }, [])
 
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 1024) setMenuOpen(false)
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('resize', onResize)
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.documentElement.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+  }, [menuOpen])
+
   const current = cases[slide]
   const prev = cases[(slide + cases.length - 1) % cases.length]
   const next = cases[(slide + 1) % cases.length]
 
   return (
+    <>
     <div className="page">
       <nav className="nav">
-        <a href="#top" className="brand">
+        <a href="#top" className="brand" onClick={() => setMenuOpen(false)}>
           <img src={img.logo} alt="Axonix" />
         </a>
         <ul className="nav-links">
@@ -218,7 +304,22 @@ export default function App() {
             </AnimatePresence>
           </li>
         </ul>
-        <Btn>Book a Demo</Btn>
+        <div className="nav-end">
+          <span className="nav-cta">
+            <Btn>Book a Demo</Btn>
+          </span>
+          <button
+            type="button"
+            className={`nav-toggle ${menuOpen ? 'open' : ''}`}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </nav>
 
       <header className="hero" id="top">
@@ -289,21 +390,21 @@ export default function App() {
             <div className="stats">
               <article>
                 <strong>
-                  $<CountUp to={5} />M+
+                  <CountUp prefix="$" to={5} suffix="M+" />
                 </strong>
-                <span>Performance Snapshot</span>
+                <span className="stat-label">Performance Snapshot</span>
               </article>
               <article>
                 <strong>
-                  <CountUp to={250} />+
+                  <CountUp to={250} suffix="+" />
                 </strong>
-                <span>Digital Reach</span>
+                <span className="stat-label">Digital Reach</span>
               </article>
               <article>
                 <strong>
-                  <CountUp to={98} />%
+                  <CountUp to={98} suffix="%" />
                 </strong>
-                <span>Client Trust</span>
+                <span className="stat-label">Client Trust</span>
               </article>
             </div>
           </div>
@@ -344,7 +445,7 @@ export default function App() {
               delay: 0.16,
             },
           ].map((card) => (
-            <Reveal key={card.title} delay={card.delay}>
+            <Reveal key={card.title} delay={card.delay} className="feature-item">
               <article className="feature-card">
                 <div className="feature-visual">
                   <img src={card.src} alt="" />
@@ -530,6 +631,30 @@ export default function App() {
             <img src={next.image} alt="" />
           </button>
         </div>
+        <div className="case-nav">
+          <button
+            type="button"
+            aria-label="Previous case"
+            onClick={() => setSlide((s) => (s + cases.length - 1) % cases.length)}
+          >
+            ‹
+          </button>
+          <div className="case-dots">
+            {cases.map((item, i) => (
+              <button
+                key={item.brand}
+                type="button"
+                className={i === slide ? 'on' : ''}
+                aria-label={`Show ${item.brand}`}
+                aria-current={i === slide ? 'true' : undefined}
+                onClick={() => setSlide(i)}
+              />
+            ))}
+          </div>
+          <button type="button" aria-label="Next case" onClick={() => setSlide((s) => (s + 1) % cases.length)}>
+            ›
+          </button>
+        </div>
       </section>
 
       <section className="quotes" id="testimonials">
@@ -540,29 +665,41 @@ export default function App() {
             Live dashboards and custom reports that surface the insights you need—instantly.
           </p>
         </Reveal>
-        <div className="quote-grid">
-          {[
-            ['“Their predictive analytics helped us forecast trends more accurately than our previous tools. It’s like having a crystal ball for our business.”', img.avatar1, 'Samson Betawi'],
-            ['“Routine tasks are now fully automated, and we can focus on strategic work that really moves the needle. It’s like having an extra set of hands—only smarter.”', img.avatar2, 'Gile Mandra'],
-            ['“The AI chatbot handles over 80% of our support tickets—and customers love the 24/7 response time.”', img.avatar3, 'Jamie Rundals'],
-            ['“Their helped us automate 70% of our manual work in under 3 months and helped triple our online engagement just in six months. Real game-changer!”', img.avatar4, 'Bills Terra'],
-            ['“Before this, we were juggling spreadsheets and manual updates. Now everything’s automated. “', img.avatar5, 'Kalio Huosen'],
-          ].map(([quote, avatar, name], i) => (
-            <Reveal key={name} delay={i * 0.05}>
-              <article className="quote-card">
-                <img className="ql" src={img.quoteLogo} alt="Logoipsum" />
-                <p>{quote}</p>
-                <div className="quote-foot">
-                  <img src={avatar} alt="" />
-                  <div>
-                    <strong>{name}</strong>
-                    <span>CMO at GreenTech</span>
-                  </div>
-                  <span className="rating">★ 4.9</span>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+        <div className="quote-rows">
+          <div className="quote-row two">
+            <QuoteCard
+              delay={0.05}
+              quote="“Their predictive analytics helped us forecast trends more accurately than our previous tools. It’s like having a crystal ball for our business.”"
+              avatar={img.avatar1}
+              name="Samson Betawi"
+            />
+            <QuoteCard
+              delay={0.1}
+              quote="“Routine tasks are now fully automated, and we can focus on strategic work that really moves the needle. It’s like having an extra set of hands—only smarter.”"
+              avatar={img.avatar2}
+              name="Gile Mandra"
+            />
+          </div>
+          <div className="quote-row three">
+            <QuoteCard
+              delay={0.12}
+              quote="“The AI chatbot handles over 80% of our support tickets—and customers love the 24/7 response time.”"
+              avatar={img.avatar3}
+              name="Jamie Rundals"
+            />
+            <QuoteCard
+              delay={0.16}
+              quote="“Their helped us automate 70% of our manual work in under 3 months and helped triple our online engagement just in six months. Real game-changer!”"
+              avatar={img.avatar4}
+              name="Bills Terra"
+            />
+            <QuoteCard
+              delay={0.2}
+              quote="“Before this, we were juggling spreadsheets and manual updates. Now everything’s automated. “"
+              avatar={img.avatar5}
+              name="Kalio Huosen"
+            />
+          </div>
         </div>
       </section>
 
@@ -701,7 +838,8 @@ export default function App() {
       </section>
 
       <footer className="footer">
-        <img className="footer-art" src={img.footerCubes} alt="" />
+        <div className="footer-waves" aria-hidden="true" />
+        <img className="footer-art" src={img.cubes} alt="" />
         <div className="footer-grid">
           <div>
             <h3>Axonix.</h3>
@@ -745,5 +883,38 @@ export default function App() {
         </div>
       </footer>
     </div>
+    <AnimatePresence>
+      {menuOpen && (
+        <>
+          <motion.button
+            type="button"
+            className="nav-backdrop"
+            aria-label="Close menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMenuOpen(false)}
+          />
+          <motion.div
+            className="nav-drawer"
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 24 }}
+            transition={{ duration: 0.25, ease }}
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest('a')) setMenuOpen(false)
+            }}
+          >
+            {drawerLinks.map(([href, label]) => (
+              <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+                {label}
+              </a>
+            ))}
+            <Btn>Book a Demo</Btn>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+    </>
   )
 }

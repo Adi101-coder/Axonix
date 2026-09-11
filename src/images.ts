@@ -9,6 +9,7 @@ import caseKondam from './assets/nMPpbIPs8beEk0SdtFkFUU24.avif'
 import blog1 from './assets/iFkvcRsxff1AtSWFrurThWF6pfU.avif'
 import blog2 from './assets/JC7iAp2EcPtq2537iOxZJexXA4.avif'
 import blog3 from './assets/zmIOWbheBAJYTG7wJ41LPmSk.avif'
+import logoipsum from './assets/PdCL5aErZ3l6ER5HSGkaRP5JWOI.svg'
 
 const p = (file: string) => `/images/${file}`
 
@@ -31,13 +32,12 @@ export const img = {
   nicolas: p('N5lfRjlzKaEo4Fk3FnOsVIAu20E.png'),
   caseLokos: p('l38NofRiCurjAYNe3fKBaKHpM9k.png'),
   caseRight: p('FQI1rKHWG7UFuIKMD8lLRahD4c.png'),
-  footerCubes: p('u57K7Fq0qMUmxKlucOIkzn6tRPk.png'),
   logoA: p('rQxLtPn3xA6bRnsG3GsmK1U5NQ.svg'),
   logoB: p('oulRiOylWi1CpWm18i22kqRHqo.svg'),
   logoC: p('C67cxfy5fhDEysnESHz2r7MMG74.svg'),
   logoD: p('eOgGAoQ8cUerr93T63t57197lKs.svg'),
-  caseLogo: p('Y4t0Eh1gUfHUX9uYoEHN5gmhkA8.svg'),
-  quoteLogo: p('PdCL5aErZ3l6ER5HSGkaRP5JWOI.svg'),
+  caseLogo: logoipsum,
+  quoteLogo: logoipsum,
   avatar1: p('jQaQy3MeB1acfC0mGXVnuEA.png'),
   avatar2: p('iA1QUmlnNIh548FqXiePXkiTOE.png'),
   avatar3: p('XuwB34O04rgEumYHa8z2gYrPjeQ.png'),
