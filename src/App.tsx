@@ -1,10 +1,63 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion'
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
 import { useRef } from 'react'
 import { img } from './images'
 import { icons } from './icons'
 
 const ease = [0.22, 1, 0.36, 1] as const
+
+function ScrollLetters({ text, className = '' }: { text: string; className?: string }) {
+  const ref = useRef<HTMLHeadingElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 0.9', 'end 0.32'],
+  })
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    ref.current?.style.setProperty('--hl', v.toFixed(4))
+  })
+
+  useEffect(() => {
+    ref.current?.style.setProperty('--hl', scrollYProgress.get().toFixed(4))
+  }, [scrollYProgress])
+
+  const parts: ReactNode[] = []
+  const total = Math.max(text.length - 1, 1)
+  let index = 0
+
+  for (const token of text.split(/(\s+)/)) {
+    const key = index
+    if (/^\s+$/.test(token)) {
+      parts.push(token)
+      index += token.length
+      continue
+    }
+
+    parts.push(
+      <span className="hl-word" key={key}>
+        {Array.from(token).map((ch, ci) => (
+          <span key={ci} style={{ ['--i' as string]: (index + ci) / total }}>
+            {ch}
+          </span>
+        ))}
+      </span>,
+    )
+    index += token.length
+  }
+
+  return (
+    <h2 ref={ref} className={`scroll-hl ${className}`.trim()}>
+      {parts}
+    </h2>
+  )
+}
 
 function Reveal({
   children,
@@ -203,8 +256,6 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { scrollY } = useScroll()
-  const handsY = useTransform(scrollY, [0, 640], [0, 90])
-  const handsScale = useTransform(scrollY, [0, 640], [1, 1.05])
   const heroBgY = useTransform(scrollY, [0, 640], [0, 50])
 
   useEffect(() => {
@@ -382,9 +433,8 @@ export default function App() {
           className="hero-hands"
           src={img.heroHands}
           alt=""
-          style={{ y: handsY, scale: handsScale }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.15, delay: 0.32, ease }}
         />
       </header>
@@ -404,12 +454,10 @@ export default function App() {
         <Reveal>
           <div className="center">
             <Pill>ABOUT US</Pill>
-            <h2 className="lead">
-              We are a forward-thinking AI agency focused on transforming businesses with
-              intelligent automation, machine learning, and predictive analytics. Our team of
-              data scientists, engineers, and creatives craft tailored AI solutions that solve
-              real-world challenges across industries.
-            </h2>
+            <ScrollLetters
+              className="lead"
+              text="We are a forward-thinking AI agency focused on transforming businesses with intelligent automation, machine learning, and predictive analytics. Our team of data scientists, engineers, and creatives craft tailored AI solutions that solve real-world challenges across industries."
+            />
           </div>
         </Reveal>
 

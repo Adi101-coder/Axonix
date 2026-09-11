@@ -314,13 +314,12 @@ button {
 
 .hero {
   position: relative;
-  min-height: min(92vh, 920px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   padding: clamp(40px, 7vw, 72px) 0 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero-bg {
@@ -392,8 +391,10 @@ h4 {
   max-width: none;
   margin-top: 28px;
   display: block;
-  object-fit: cover;
-  object-position: center;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center bottom;
+  height: auto;
 }
 
 .logos {
@@ -471,6 +472,28 @@ h4 {
   line-height: 1.28;
   font-weight: 500;
   letter-spacing: -0.035em;
+}
+
+.scroll-hl {
+  --hl: 0;
+}
+
+.scroll-hl .hl-word {
+  white-space: nowrap;
+}
+
+.scroll-hl .hl-word span {
+  color: color-mix(
+    in srgb,
+    var(--black) calc(clamp(0%, (var(--hl) - var(--i)) * 650%, 100%)),
+    #d0d0d0
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hl .hl-word span {
+    color: var(--black);
+  }
 }
 
 .about-panel {
@@ -1258,40 +1281,46 @@ h4 {
 
 .footer-visual {
   position: relative;
-  height: clamp(440px, 52vw, 620px);
+  height: clamp(360px, 42vw, 500px);
+  overflow: hidden;
   pointer-events: none;
+  margin-top: 72px;
 }
 
 .footer-waves {
   position: absolute;
   left: 50%;
-  top: -8%;
-  width: min(1680px, 160vw);
-  height: 120%;
+  top: 0;
+  width: min(1600px, 140vw);
+  height: 100%;
   transform: translateX(-50%);
   background: url('/images/u57K7Fq0qMUmxKlucOIkzn6tRPk.png') center center / cover no-repeat;
-  opacity: 0.95;
+  opacity: 0.85;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
 }
 
 .footer-art {
   position: absolute;
   left: 50%;
-  top: 6%;
-  width: min(760px, 78vw);
-  max-width: none;
-  transform: translateX(-50%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 20%, #000 100%);
+  top: 46%;
+  width: min(520px, 54vw);
+  height: auto;
+  max-height: 92%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 52%, transparent 90%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 52%, transparent 90%);
 }
 
 .footer-grid {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr 1.2fr;
   gap: 32px;
   max-width: 1200px;
-  margin: 8px auto 0;
+  margin: 0 auto;
 }
 
 .footer h3 {
@@ -1444,12 +1473,13 @@ h4 {
   }
 
   .footer-visual {
-    height: clamp(300px, 78vw, 420px);
+    height: clamp(260px, 64vw, 360px);
+    margin-top: 48px;
   }
 
   .footer-art {
-    width: min(520px, 92vw);
-    top: 10%;
+    width: min(340px, 72vw);
+    top: 48%;
   }
 
   .process-visual {
@@ -1561,8 +1591,7 @@ h4 {
 
 @media (min-width: 1600px) {
   .hero-hands {
-    max-width: 1440px;
-    margin-inline: auto;
+    max-width: none;
   }
 }
 
@@ -1580,8 +1609,7 @@ h4 {
 }
 
 .hero-hands {
-  will-change: transform;
-  filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.08));
+  will-change: auto;
 }
 
 .pill {
