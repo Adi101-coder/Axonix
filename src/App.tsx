@@ -503,7 +503,8 @@ export default function App() {
             deliver transformative AI solutions.
           </p>
         </Reveal>
-        <div className="feature-grid">
+        <div className="feature-box">
+          <div className="feature-grid">
           {[
             {
               src: img.analytics,
@@ -534,6 +535,7 @@ export default function App() {
               </article>
             </Reveal>
           ))}
+          </div>
         </div>
       </section>
 
