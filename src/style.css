@@ -1,10 +1,9 @@
 :root {
   --black: #1a1612;
-  --white: #fffefb;
-  --hero: #fffefb;
-  --muted: #6b6258;
-  --soft: #f8f4ec;
-  --softer: #fdfbf7;
+  --white: #f7f4ee;
+  --hero: #f7f4ee;
+  --soft: #f3eee6;
+  --softer: #faf8f3;
   --gold: #b8954a;
   --gold-deep: #9a7a38;
   --line: rgba(26, 22, 18, 0.08);
@@ -336,7 +335,9 @@ button {
   text-align: center;
   padding: clamp(24px, 4vh, 48px) 0 0;
   overflow: hidden;
-  background: var(--hero);
+  background:
+    radial-gradient(900px 420px at 88% 30%, rgba(216, 184, 122, 0.08), transparent 70%),
+    var(--hero);
   isolation: isolate;
 }
 
@@ -353,8 +354,6 @@ button {
   inset: 0;
   width: 100%;
   height: 100%;
-  color: var(--gold);
-  opacity: 0.48;
 }
 
 .hero-hands {

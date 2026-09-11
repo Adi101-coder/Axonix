@@ -96,32 +96,41 @@ function Logoipsum() {
 }
 
 function HeroWaves() {
-  const paths = Array.from({ length: 8 }, (_, i) => {
-    const t = i / 7
-    const gapX = 50
-    const gapY = 80 + t * 5.5
-    const leftY = 34 + t * 16
-    const rightY = 16 + t * 22
-    return `M -8 ${leftY} C 22 ${leftY + 12}, 36 ${gapY - 1}, ${gapX} ${gapY} S 78 ${rightY + 14}, 108 ${rightY}`
-  })
+  const lines = [
+    { o: 0.25, y: [255, 612, 210] },
+    { o: 0.2, y: [292, 638, 252] },
+    { o: 0.22, y: [338, 668, 302] },
+    { o: 0.16, y: [392, 702, 362] },
+    { o: 0.2, y: [456, 740, 432] },
+    { o: 0.15, y: [530, 782, 512] },
+    { o: 0.18, y: [612, 828, 600] },
+  ]
 
   return (
     <svg
       className="hero-waves"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMax slice"
       aria-hidden="true"
     >
-      {paths.map((d) => (
-        <path
-          key={d}
-          d={d}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.05"
-          vectorEffect="non-scaling-stroke"
-        />
-      ))}
+      {lines.map((line, i) => {
+        const [yL, yC, yR] = line.y
+        const drift = (i % 2 === 0 ? 1 : -1) * (10 + i * 3)
+        const d = `M -80 ${yL}
+          C ${300 + drift} ${yL}, ${560 - drift} ${yC}, 720 ${yC}
+          C ${880 + drift} ${yC}, ${1140 - drift} ${yR}, 1520 ${yR}`
+        return (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="#D8B87A"
+            strokeWidth="1.2"
+            strokeOpacity={line.o}
+            vectorEffect="non-scaling-stroke"
+          />
+        )
+      })}
     </svg>
   )
 }
