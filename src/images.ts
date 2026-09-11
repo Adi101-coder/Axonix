@@ -24,7 +24,7 @@ export const img = {
   blog2,
   blog3,
   logo: p('9JYQyVXx8KcGAaFl7ov5ZZGsXs.svg'),
-  heroHands: p('hero2.png'),
+  heroHands: p('hero3.png'),
   badge: p('hfLbzDwAMFhAQJjaQotR5S5lGc.png'),
   heroBg: p('CXf1VtliCLhgE72rnxykPb20LI8.png'),
   handshake: p('YUzSyGKGhbl5eDTwnRH51Jltc.png'),
