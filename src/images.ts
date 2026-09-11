@@ -42,7 +42,6 @@ export const img = {
   avatar3: p('XuwB34O04rgEumYHa8z2gYrPjeQ.png'),
   avatar4: p('Blu51nsth3wyeoA8UWAFJXPARCc.png'),
   avatar5: p('Y3azNG5Wkm1pzKNts3LdJsa2ts.png'),
-  check: p('hQNVl4mx6VpvYfVsjnV7C4vO0tE.svg'),
   chevron: p('vEcNCNvwFVKx5Hb4oHbqI81Idig.svg'),
   iconNlp: p('58JixNY1LrY4tG546W3MKZjvt8.svg'),
   iconStrategy: p('4Sm4xVttryAnfudwSQqg27udqmE.svg'),

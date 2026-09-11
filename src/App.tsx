@@ -81,6 +81,20 @@ function Reveal({
   )
 }
 
+function Logoipsum() {
+  return (
+    <span className="logoipsum">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M16 2.4 29.6 28H2.4L16 2.4Zm0 8.8L8.7 24.4h14.6L16 11.2Z"
+        />
+      </svg>
+      Logoipsum
+    </span>
+  )
+}
+
 function QuoteCard({
   quote,
   avatar,
@@ -242,7 +256,6 @@ const drawerLinks = [
   ['#top', 'Home'],
   ['#about', 'About us'],
   ['#features', 'Features'],
-  ['#pricing', 'Pricing'],
   ['#cases', 'Case Study'],
   ['#blog', 'Blog'],
   ['#contact', 'Contact'],
@@ -250,20 +263,12 @@ const drawerLinks = [
 
 export default function App() {
   const [openFaq, setOpenFaq] = useState(0)
-  const [slide, setSlide] = useState(0)
   const [homeOpen, setHomeOpen] = useState(false)
   const [pagesOpen, setPagesOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { scrollY } = useScroll()
   const heroBgY = useTransform(scrollY, [0, 640], [0, 50])
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setSlide((s) => (s + 1) % cases.length)
-    }, 5200)
-    return () => window.clearInterval(id)
-  }, [])
 
   useEffect(() => {
     const onResize = () => {
@@ -295,10 +300,6 @@ export default function App() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  const current = cases[slide]
-  const prev = cases[(slide + cases.length - 1) % cases.length]
-  const next = cases[(slide + 1) % cases.length]
 
   return (
     <>
@@ -335,9 +336,6 @@ export default function App() {
             <a href="#about">About us</a>
           </li>
           <li>
-            <a href="#pricing">Pricing</a>
-          </li>
-          <li>
             <a href="#blog">Blog</a>
           </li>
           <li>
@@ -361,7 +359,6 @@ export default function App() {
                 >
                   <a href="#about">About us</a>
                   <a href="#cases">Case Study</a>
-                  <a href="#pricing">Pricing</a>
                   <a href="#blog">Blog</a>
                   <a href="#contact">Contact</a>
                 </motion.div>
@@ -668,66 +665,30 @@ export default function App() {
             Live dashboards and custom reports that surface the insights you need—instantly.
           </p>
         </Reveal>
-        <div className="case-stage">
-          <button className="case-side left" onClick={() => setSlide((s) => (s + cases.length - 1) % cases.length)} aria-label="Previous">
-            <img src={prev.image} alt="" />
-          </button>
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={current.brand}
-              className="case-card"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.45, ease }}
-            >
-              <img className="case-photo" src={current.image} alt={current.brand} />
-              <div className="case-body">
-                <img className="case-logo" src={img.caseLogo} alt="Logoipsum" />
-                <h3>{current.brand}</h3>
-                <p>{current.copy}</p>
-                <Btn href="#contact">See Case Study</Btn>
-                <div className="case-metrics">
-                  <div>
-                    <strong>90%</strong>
-                    <span>Average selling product</span>
-                  </div>
-                  <div>
-                    <strong>43%</strong>
-                    <span>Improved team output</span>
+        <div className="case-marquee">
+          <div className="case-marquee-track">
+            {[...cases, ...cases].map((item, i) => (
+              <article className="case-card" key={`${item.brand}-${i}`}>
+                <img className="case-photo" src={item.image} alt={item.brand} />
+                <div className="case-body">
+                  <Logoipsum />
+                  <h3>{item.brand}</h3>
+                  <p>{item.copy}</p>
+                  <Btn href="#contact">See Case Study</Btn>
+                  <div className="case-metrics">
+                    <div>
+                      <strong>90%</strong>
+                      <span>Average selling product</span>
+                    </div>
+                    <div>
+                      <strong>43%</strong>
+                      <span>Improved team output</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <img className="case-photo right-photo" src={img.caseRight} alt="" />
-            </motion.article>
-          </AnimatePresence>
-          <button className="case-side right" onClick={() => setSlide((s) => (s + 1) % cases.length)} aria-label="Next">
-            <img src={next.image} alt="" />
-          </button>
-        </div>
-        <div className="case-nav">
-          <button
-            type="button"
-            aria-label="Previous case"
-            onClick={() => setSlide((s) => (s + cases.length - 1) % cases.length)}
-          >
-            ‹
-          </button>
-          <div className="case-dots">
-            {cases.map((item, i) => (
-              <button
-                key={item.brand}
-                type="button"
-                className={i === slide ? 'on' : ''}
-                aria-label={`Show ${item.brand}`}
-                aria-current={i === slide ? 'true' : undefined}
-                onClick={() => setSlide(i)}
-              />
+              </article>
             ))}
           </div>
-          <button type="button" aria-label="Next case" onClick={() => setSlide((s) => (s + 1) % cases.length)}>
-            ›
-          </button>
         </div>
       </section>
 
@@ -774,49 +735,6 @@ export default function App() {
               name="Kalio Huosen"
             />
           </div>
-        </div>
-      </section>
-
-      <section className="pricing" id="pricing">
-        <Reveal className="center">
-          <Pill>PRICING</Pill>
-          <h2>Flexible Plans for Every Stage</h2>
-          <p className="sub">
-            Live dashboards and custom reports that surface the insights you need—instantly.
-          </p>
-        </Reveal>
-        <div className="price-grid">
-          {([
-            ['Starter', '$999', false],
-            ['Growth', '$2.999', true],
-            ['Enterprise', '$3.200', false],
-          ] as const).map(([name, price, popular], i) => (
-            <Reveal key={String(name)} delay={i * 0.08}>
-              <article className={`price-card ${popular ? 'popular' : ''}`}>
-                {popular ? <span className="badge">Most Popular</span> : null}
-                <h3>{name}</h3>
-                <p className="amount">
-                  {price} <small>/mo</small>
-                </p>
-                <p className="price-copy">
-                  Integrated AI-driven product recommendations based on real-time user behavior.
-                </p>
-                <ul>
-                  {['1 Campaign', 'Monthly Reports', 'Email Support', 'Priority Support', '4x Revisions'].map(
-                    (item) => (
-                      <li key={item}>
-                        <img src={img.check} alt="" />
-                        {item}
-                      </li>
-                    ),
-                  )}
-                </ul>
-                <Btn href="#contact" variant={popular ? 'dark' : 'light'}>
-                  Choose Plan
-                </Btn>
-              </article>
-            </Reveal>
-          ))}
         </div>
       </section>
 
@@ -930,7 +848,6 @@ export default function App() {
             <span>QUICK LINK</span>
             <a href="#about">About Us</a>
             <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
             <a href="#cases">Case Study</a>
             <a href="#contact">Contact</a>
           </div>
