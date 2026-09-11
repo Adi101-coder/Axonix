@@ -23,6 +23,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 84px;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -366,7 +367,7 @@ h4 {
 }
 
 .logos {
-  padding: 56px 0 32px;
+  padding: clamp(32px, 5vw, 56px) 0 32px;
   text-align: center;
 }
 
@@ -523,7 +524,7 @@ h4 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
-  margin-top: 48px;
+  margin-top: clamp(28px, 4vw, 48px);
 }
 
 .feature-grid > *,
@@ -675,16 +676,19 @@ h4 {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: var(--black);
+  background: linear-gradient(180deg, #2c2c2c 0%, #111 100%);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
   display: grid;
   place-items: center;
+  color: #fff;
+  flex: 0 0 auto;
 }
 
-.step-icon img,
-.why-icon img {
+.step-icon svg,
+.why-icon svg {
   width: 20px;
   height: 20px;
-  filter: invert(1);
+  display: block;
 }
 
 .steps h4 {

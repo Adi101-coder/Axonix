@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { img } from './images'
+import { icons } from './icons'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -486,9 +487,7 @@ export default function App() {
           </p>
           <ul className="steps">
             <li>
-              <span className="step-icon">
-                <img src={img.iconWorkflow} alt="" />
-              </span>
+              <span className="step-icon">{icons.nodes}</span>
               <div>
                 <h4>Workflow Assessment</h4>
                 <p>
@@ -498,9 +497,7 @@ export default function App() {
               </div>
             </li>
             <li>
-              <span className="step-icon">
-                <img src={img.iconDeploy} alt="" />
-              </span>
+              <span className="step-icon">{icons.rocket}</span>
               <div>
                 <h4>Deploy with Confidence</h4>
                 <p>
@@ -510,9 +507,7 @@ export default function App() {
               </div>
             </li>
             <li>
-              <span className="step-icon">
-                <img src={img.iconSupport} alt="" />
-              </span>
+              <span className="step-icon">{icons.headset}</span>
               <div>
                 <h4>Ongoing Support & Optimization</h4>
                 <p>
@@ -556,18 +551,16 @@ export default function App() {
           </p>
         </Reveal>
         <div className="why-grid">
-          {[
-            [img.why1, 'Fast, scalable, and tailored solutions', 'Send, receive, and manage payments—all in one place, fully encrypted and compliant.'],
-            [img.why2, 'Hands-on AI expertise, not just theory', 'Connect with your favorite tools: QuickBooks, Stripe, Xero, Plaid, and more.'],
-            [img.why3, 'Results-driven with measurable ROI', 'Stay ahead of regulations with automated KYC/AML checks and audit trails.'],
-            [img.why4, 'Cross-industry experience', 'Send, receive, and manage payments—all in one place, fully encrypted and compliant.'],
-            [img.why5, 'Security and privacy at every step', 'Connect with your favorite tools: QuickBooks, Stripe, Xero, Plaid, and more.'],
-          ].map(([icon, title, copy], i) => (
+          {([
+            [icons.bolt, 'Fast, scalable, and tailored solutions', 'Send, receive, and manage payments—all in one place, fully encrypted and compliant.'],
+            [icons.monitor, 'Hands-on AI expertise, not just theory', 'Connect with your favorite tools: QuickBooks, Stripe, Xero, Plaid, and more.'],
+            [icons.radar, 'Results-driven with measurable ROI', 'Stay ahead of regulations with automated KYC/AML checks and audit trails.'],
+            [icons.star, 'Cross-industry experience', 'Send, receive, and manage payments—all in one place, fully encrypted and compliant.'],
+            [icons.shield, 'Security and privacy at every step', 'Connect with your favorite tools: QuickBooks, Stripe, Xero, Plaid, and more.'],
+          ] as const).map(([icon, title, copy], i) => (
             <Reveal key={title} delay={i * 0.05}>
               <article className="why-card">
-                <span className="why-icon">
-                  <img src={icon} alt="" />
-                </span>
+                <span className="why-icon">{icon}</span>
                 <h3>{title}</h3>
                 <p>{copy}</p>
               </article>

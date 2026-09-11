@@ -53,9 +53,4 @@ export const img = {
   iconWorkflow: p('LzPBtaHdymAROYB08IBc75GUdqY.svg'),
   iconDeploy: p('iQSfPi1dWWpgZ9D8UHbgEo7DyM.svg'),
   iconSupport: p('mmJJAqPsFJuLFLto0o9YFJp4I.svg'),
-  why1: p('niTgfBhce8UUqjXS5klg4rOJg.svg'),
-  why2: p('S7cumS8E2Yglc5jE9tHBvTzuk.svg'),
-  why3: p('ZQ9LRkDUzuQmxgdHJQPqanCyMDI.svg'),
-  why4: p('hWQHlGPYF3FrI8QTwSLZvjuMQ.svg'),
-  why5: p('XzS2vY4d5PCcZuXHrpjUaLD0.svg'),
 }
