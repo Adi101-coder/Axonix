@@ -340,18 +340,21 @@ button {
   isolation: isolate;
 }
 
-.hero-bg {
+.hero-waves-wrap {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-waves {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center bottom;
-  pointer-events: none;
-  opacity: 0.55;
-  filter: sepia(0.45) saturate(0.7);
-  mix-blend-mode: multiply;
+  color: var(--gold);
+  opacity: 0.48;
 }
 
 .hero-hands {

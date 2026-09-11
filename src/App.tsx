@@ -95,6 +95,37 @@ function Logoipsum() {
   )
 }
 
+function HeroWaves() {
+  const paths = Array.from({ length: 8 }, (_, i) => {
+    const t = i / 7
+    const gapX = 50
+    const gapY = 80 + t * 5.5
+    const leftY = 34 + t * 16
+    const rightY = 16 + t * 22
+    return `M -8 ${leftY} C 22 ${leftY + 12}, 36 ${gapY - 1}, ${gapX} ${gapY} S 78 ${rightY + 14}, 108 ${rightY}`
+  })
+
+  return (
+    <svg
+      className="hero-waves"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {paths.map((d) => (
+        <path
+          key={d}
+          d={d}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.05"
+          vectorEffect="non-scaling-stroke"
+        />
+      ))}
+    </svg>
+  )
+}
+
 function QuoteCard({
   quote,
   avatar,
@@ -385,7 +416,9 @@ export default function App() {
       </nav>
 
       <header className="hero" id="top">
-        <motion.img className="hero-bg" src={img.heroBg} alt="" style={{ y: heroBgY }} />
+        <motion.div className="hero-waves-wrap" style={{ y: heroBgY }}>
+          <HeroWaves />
+        </motion.div>
         <div className="hero-copy">
           <motion.p
             className="hero-kicker"
