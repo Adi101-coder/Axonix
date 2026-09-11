@@ -1,4 +1,3 @@
-import heroHands from './assets/G0SpZp0WpTBVplZfXSIJemcW0o.avif'
 import cubes from './assets/MSeK5W7fBYbdR7MTmXOXfO9sQE8.avif'
 import analytics from './assets/gafvjOKcY1DVZdyRaWiETmyZI.avif'
 import growth from './assets/rjGU1GCjPxSGEtw13lCs5jIkLrw.avif'
@@ -14,7 +13,6 @@ import logoipsum from './assets/PdCL5aErZ3l6ER5HSGkaRP5JWOI.svg'
 const p = (file: string) => `/images/${file}`
 
 export const img = {
-  heroHands,
   cubes,
   analytics,
   growth,
@@ -26,6 +24,7 @@ export const img = {
   blog2,
   blog3,
   logo: p('9JYQyVXx8KcGAaFl7ov5ZZGsXs.svg'),
+  heroHands: p('heroo.jpeg'),
   badge: p('hfLbzDwAMFhAQJjaQotR5S5lGc.png'),
   heroBg: p('CXf1VtliCLhgE72rnxykPb20LI8.png'),
   handshake: p('YUzSyGKGhbl5eDTwnRH51Jltc.png'),
