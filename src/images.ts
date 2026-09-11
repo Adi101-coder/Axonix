@@ -26,7 +26,7 @@ export const img = {
   logo: p('9JYQyVXx8KcGAaFl7ov5ZZGsXs.svg'),
   heroHands: p('hero3.png'),
   badge: p('hfLbzDwAMFhAQJjaQotR5S5lGc.png'),
-  heroBg: p('hero-waves.png'),
+  heroBg: p('CXf1VtliCLhgE72rnxykPb20LI8.png'),
   handshake: p('YUzSyGKGhbl5eDTwnRH51Jltc.png'),
   nicolas: p('N5lfRjlzKaEo4Fk3FnOsVIAu20E.png'),
   caseLokos: p('l38NofRiCurjAYNe3fKBaKHpM9k.png'),

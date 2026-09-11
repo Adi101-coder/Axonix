@@ -1,7 +1,7 @@
 :root {
   --black: #1a1612;
   --white: #fffefb;
-  --hero: #fefcf8;
+  --hero: #fffefb;
   --muted: #6b6258;
   --soft: #f8f4ec;
   --softer: #fdfbf7;
@@ -349,6 +349,9 @@ button {
   object-fit: cover;
   object-position: center bottom;
   pointer-events: none;
+  opacity: 0.55;
+  filter: sepia(0.45) saturate(0.7);
+  mix-blend-mode: multiply;
 }
 
 .hero-hands {
